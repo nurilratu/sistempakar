@@ -500,36 +500,17 @@ document.getElementById('submitPerhitungan').addEventListener("click", (e) => {
 
     kemungkinanPenyakit.gejala.forEach(function(g) {
         g.subGejala.forEach(function(sg) {
-            //g.persentaseSubGejala += sg.persentase;
-            g.persentaseSubGejala = sg.persentase + g.persentaseSubGejala;
+            g.persentaseSubGejala += sg.persentase;
         });
     });
 
     penyakit.forEach(function(p) {
         p.gejala.forEach(function(g) {
             kemungkinanPenyakit.gejala.forEach(function(kg) {
-                if (g.idGejala == kg._id) {
+                if (g.idGejala === kg._id) {
                     if (kemungkinanPenyakit.penyakit.indexOf(p) === -1) {
                         kemungkinanPenyakit.penyakit.push(p);
                     }
-                }
-            });
-        });
-    });  
-
-    //otak atik bagian sini
-    kemungkinanPenyakit.penyakit.forEach(function(kpp) {
-        kemungkinanPenyakit.gejala.forEach(function (kpg) {        
-            kpp.gejala.forEach(function(kppg) {
-                if (kppg.idGejala !== kpg._id) {
-                    kpp.gejala.remByVal(kpp.gejala[kpp.gejala.indexOf(kppg) + 1]);
-                }
-            });
-        });
-        kpp.gejala.forEach(function(kppg) {
-            kemungkinanPenyakit.gejala.forEach(function (kpg) {          
-                if (kppg.idGejala !== kpg._id) {
-                    kpp.gejala.remByVal(kpp.gejala[kpp.gejala.indexOf(kppg) + 1]);
                 }
             });
         });
@@ -548,13 +529,12 @@ document.getElementById('submitPerhitungan').addEventListener("click", (e) => {
     kemungkinanPenyakit.penyakit.forEach(function (kpp) {
         let newPersenPenyakit = 0;
         kpp.gejala.forEach(function(kppg){
-            //newPersenPenyakit += kppg.newPersenGejala;
-            newPersenPenyakit = kppg.newPersenGejala + newPersenPenyakit; 
-            if(newPersenPenyakit > kpp.treshold) {
-                document.getElementById("penyakit").innerHTML += "Anda terinfeksi penyakit" + " " + kpp.name;
-            }
-            document.getElementById("persentaseKemungkinanPenyakit").innerHTML += kpp.name + " = "+ newPersenPenyakit + "%"+ "<br>"; 
+            newPersenPenyakit += kppg.newPersenGejala;
         });
+        if(newPersenPenyakit > kpp.treshold) {
+            document.getElementById("penyakit").innerHTML += "Anda terinfeksi penyakit" + " " + kpp.name;
+        }
+        document.getElementById("persentaseKemungkinanPenyakit").innerHTML += kpp.name + " = "+ newPersenPenyakit + "%"+ "<br>"; 
     });
 
     console.log(kemungkinanPenyakit.penyakit);
